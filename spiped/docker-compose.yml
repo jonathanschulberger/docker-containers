@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  spiped-generate-key:
+    image: spiped:1.6.1-alpine
+    entrypoint: [""]
+    command: spiped-generate-key.sh
+    volumes:
+      - private/spiped-keyfile:/spiped/key:rw
+  spiped-decryptor-example:
+    image: spiped:1.6.1-alpine
+    command: spiped -d -s '[0.0.0.0]:9200' -t '<target-ip>:<target-port>'
+    volumes: 
+      - private/spiped-keyfile:/spiped/key:ro
+    ports:
+      - "9200:9200"
+    user: spiped
+  spiped-encryptor-example:
+    image: spiped:1.6.1-alpine
+    command: spiped -e -s '[0.0.0.0]:9200' -t '<target-decryptor-ip>:<target-decryptor-port>'
+    volumes: 
+      - private/spiped-keyfile:/spiped/key:ro
+    ports:
+      - "9200:9200"
+    user: spiped
