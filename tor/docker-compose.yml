@@ -9,7 +9,7 @@ services:
         TORVERSION: 0.4.6
     image: tor:0.4.6
     volumes:
-      - ./private/torrc:/home/tor/.torrc:rw
+      - ./private/torrc:/home/tor/.torrc:ro
     ports:
       - "9050:9050"
     restart: always
