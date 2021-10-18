@@ -1,5 +1,5 @@
-FROM alpine:3.14.1 AS build
-# 0.4.3
+FROM alpine:latest AS build
+
 ARG TORVERSION
 ARG MAKETHREADS=4
 
@@ -17,7 +17,7 @@ RUN cd /tmp/src && \
     make -j ${MAKETHREADS}
 
 
-FROM alpine:3.14.1 AS tor-proxy
+FROM alpine:latest AS tor-proxy
 
 # pre-reqs
 RUN apk add --no-cache \
@@ -38,10 +38,3 @@ HEALTHCHECK --timeout=10s --start-period=60s \
     CMD curl --fail --socks5-hostname 127.0.0.1:9050 -I -L 'https://ahmia.fi/' || exit 1
 
 CMD [ "/home/tor/bin/tor" ]
-
-# must mount torrc file OR override CMD
-# - docker run -v <host-path>:/home/tor/.torrc:ro [...]
-# must publish ports for socks proxy and control port
-# - docker run -p 9050:9050 [...]
-# restart if failure
-# - docker run --restart=always

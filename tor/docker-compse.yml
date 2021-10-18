@@ -1,7 +1,0 @@
-version: '3'
-
-services:
-  tor-example:
-    image: tor:latest
-    volumes:
-      - torrc:/home/tor/.torrc:ro
