@@ -9,17 +9,15 @@ services:
       - private/spiped-keyfile:/spiped/key:rw
   spiped-decryptor-example:
     image: spiped:1.6.1-alpine
-    command: spiped -d -s '[0.0.0.0]:9200' -t '<target-ip>:<target-port>'
+    command: spiped -d -s '[0.0.0.0]:<listening-port>' -t '<service-ip>:<service-port>'
     volumes: 
       - private/spiped-keyfile:/spiped/key:ro
-    ports:
-      - "9200:9200"
     user: spiped
   spiped-encryptor-example:
     image: spiped:1.6.1-alpine
-    command: spiped -e -s '[0.0.0.0]:9200' -t '<target-decryptor-ip>:<target-decryptor-port>'
+    command: spiped -e -s '[0.0.0.0]:<service-port>' -t '<decryptor-ip>:<decryptor-port>'
     volumes: 
       - private/spiped-keyfile:/spiped/key:ro
     ports:
-      - "9200:9200"
+      - "<service-port>:<service-port>"
     user: spiped
